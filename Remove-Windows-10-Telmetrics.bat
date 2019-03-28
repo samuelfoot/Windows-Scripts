@@ -59,18 +59,6 @@ echo [OK]
 taskkill /im explorer.exe /f
 start explorer.exe
 
-if not defined LTSB (
-	cls
-	echo Deleting trash apps...
-	powershell -Command "& {Get-AppxPackage -AllUsers | Remove-AppxPackage; Get-AppxProvisionedPackage -Online | Remove-AppxProvisionedPackage -Online;}"
-	takeown /f "%ProgramFiles%\WindowsApps" /r
-	icacls "%ProgramFiles%\WindowsApps" /inheritance:e /grant "%UserName%:(OI)(CI)F" /T /C
-	for /d %%i in ("%ProgramFiles%\WindowsApps\*") do (
-		rd /s /q "%%i"
-	)
-	icacls "%ProgramFiles%\WindowsApps" /setowner "NT Service\TrustedInstaller"
-	icacls "%ProgramFiles%\WindowsApps" /inheritance:r /remove "%UserName%"
-)
 
 cls
 echo Deleting spyware firewall rules... 
