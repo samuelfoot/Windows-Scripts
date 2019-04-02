@@ -29,6 +29,8 @@ if not errorlevel 1 (
 )
 
 echo | set /p=Running Custom Reg edits 
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v "EnableLUA" /t REG_DWORD /d 0 /f > nul
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v "EnableLUA" /t REG_DWORD /d 0 /f > nul
 reg add "HKCU\Control Panel\International\User Profile" /v "HttpAcceptLanguageOptOut" /t REG_DWORD /d 1 /f > nul
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "Start_TrackProgs" /t REG_DWORD /d 0 /f > nul
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v "SubscribedContent-338393Enabled" /t REG_DWORD /d 0 /f > nul
@@ -540,11 +542,7 @@ echo | set /p=Enable NTFS long paths
 reg add "HKLM\SYSTEM\CurrentControlSet\Policies" /v "LongPathsEnabled" /t REG_DWORD /d 1 /f > nul
 echo [OK]
 
-echo.
-echo | set /p=Restarting Explorer... 
-taskkill /f /im explorer.exe >nul & explorer.exe
-schtasks /delete /tn "CreateExplorerShellUnelevatedTask" /f > nul
-echo OK.
+
 
 echo.
 echo Deleting spyware tasks...
@@ -643,5 +641,9 @@ if not exist %update_orchestrator_dir%\Reboot\ (
 	echo OK.
 )
 
+taskkill /im explorer.exe /f
+start explorer.exe
+
 echo.
 echo Finished.
+pause
